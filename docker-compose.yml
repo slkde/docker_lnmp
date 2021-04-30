@@ -1,0 +1,118 @@
+version: "3.9"
+# author: "slkde@sina.com"
+services:
+  # ==========================================================================================
+  # 网站服务容器
+  nginx:
+    build:
+      context: ${NGINX_BUILD}
+      args:
+        - VERSION=${NGINX_VERSION}
+        - MIRRORS_URL
+        - TIMEZONE
+    container_name: nginx_${VERSION}
+    ports:
+      - ${NGINX_HOST_HTTP_PORT}:80
+      - ${NGINX_HOST_HTTPS_PORT}:443
+    restart: ${STATUS}
+    volumes:
+      # nginx配置文件
+      - ${NGINX_CONF_PATH}nginx.conf:/etc/nginx/nginx.conf
+      - ${NGINX_DATA_PATH}:/etc/nginx/conf.d/
+      # 项目目录
+      - ${ROOT_PATH}:/var/www/
+      # nginx日志
+      - ${LOG_PATH}/nginx/:/var/log/nginx/
+      # 使用sock
+      - ./tmp/run/:/usr/local/var/run/
+    depends_on:
+      - php
+    # nginx调试模式
+    # command: [nginx-debug, '-g', 'daemon off;']
+    networks:
+      docker_lnmp:
+        ipv4_address: ${NGINX_IP}
+  # ==========================================================================================
+  # php服务容器
+  php:
+    build:
+      context: ${PHP_BUILD}
+      args:
+        - VERSION=${PHP_VERSION}
+        - MIRRORS_URL
+        - TIMEZONE
+        - COMPOSER_URL
+    container_name: php_${VERSION}
+    # privileged: true
+    # ports:
+    #   - 9000:9000
+    restart: ${STATUS}
+    volumes:
+      # 配置文件
+      - ${PHP_BUILD}${PHP_VERSION}/php/php.ini:/usr/local/etc/php/php.ini
+      - ${PHP_BUILD}${PHP_VERSION}/php/conf.d/:/usr/local/etc/php/conf.d/
+      - ${PHP_BUILD}${PHP_VERSION}/php-fpm.d/:/usr/local/etc/php-fpm.d/
+      # 项目目录
+      - ${ROOT_PATH}:/var/www/
+      # php-fpm日志
+      - ${LOG_PATH}/php/:/var/log/php/
+      # 使用sock
+      - ./tmp/run/:/usr/local/var/run/
+      # composer缓存挂载
+      - ./tmp/.composer/cache:/root/.composer/cache
+    networks:
+      docker_lnmp:
+        ipv4_address: ${PHP_IP}
+  # ==========================================================================================
+  # 数据库服务容器
+  mysql:
+    build:
+      context: ${MYSQL_BUILD}
+      args:
+        - VERSION=${MYSQL_VERSION}
+        - MIRRORS_URL
+        - TIMEZONE
+    container_name: mysql_${VERSION}
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    volumes:
+      # mysql配置文件
+      - ${MYSQL_BUILD}/etc/my.cnf:/etc/mysql/my.cnf
+      - ${MYSQL_BUILD}/etc/conf.d/docker.cnf:/etc/mysql/conf.d/docker.cnf
+      # 数据库文件
+      - ${MYSQL_DATA_PATH}:/var/lib/mysql/
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - ${MYSQL_PORT}:3306
+    restart: ${STATUS}
+    networks:
+      docker_lnmp:
+        ipv4_address: ${MYSQL_IP}
+  # ==========================================================================================
+  # redis你懂的
+  redis:
+    build:
+      context: ${REDIS_BUILD}
+      args:
+        - VERSION=${REDIS_VERSION}
+        - MIRRORS_URL
+        - TIMEZONE
+    container_name: redis_${VERSION}
+    command: redis-server /etc/redis/redis.conf
+    volumes:
+      - ${REDIS_CONF_PATH}${REDIS_VERSION}.conf:/etc/redis/redis.conf
+      - ${REDIS_DATA_PATH}${REDIS_VERSION}:/data/
+    ports:
+      - ${REDIS_PORT}:6379
+    restart: ${STATUS}
+    networks:
+      docker_lnmp:
+        ipv4_address: ${REDIS_IP}
+# ==========================================================================================
+# 网络设置
+networks:
+  docker_lnmp:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${SUBNET}
