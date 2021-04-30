@@ -16,13 +16,13 @@ RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
 RUN sed -i "s%deb.debian.org%${MIRRORS_URL}%g" /etc/apt/sources.list
 RUN sed -i "s%security.debian.org/debian-security%${MIRRORS_URL}/debian-security%g" /etc/apt/sources.list
 
-# 安装基础
+# 安装基本工具
 # RUN apt-get update \
 #     && apt-get install -y --no-install-recommends \
 #     apt-utils \
-#     curl \
 #     vim \
 #     wget \
+#     curl \
 #     && apt-get autoremove \
 #     && apt-get clean \
 #     && rm -rf /var/lib/apt/lists/*
