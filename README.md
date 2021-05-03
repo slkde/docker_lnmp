@@ -7,6 +7,10 @@
 
 ### 说明：
 个人感觉十分简洁好用的lnmp环境。欢迎大家使用，以及提出意见。
+
+推荐在windows使用[wsl---windows subsystem for linux](https://github.com/slkde/wsl)。
+
+推荐使用[vscode](https://github.com/slkde/vscode) 点击连接远程，点击remote-containers: attach to running container
 ### 使用方法：
 国内：
 ```
