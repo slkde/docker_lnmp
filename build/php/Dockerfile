@@ -106,7 +106,7 @@ RUN mv /usr/local/lib/php/extensions/ext/* `php-config --extension-dir`
 RUN mkdir -p /root/.composer/cache
 RUN curl -sS https://install.phpcomposer.com/installer | php -- --install-dir=/usr/bin --filename=composer
 RUN composer config -g repo.packagist composer ${COMPOSER_URL} \
-    && composer self-update --1
+    && composer self-update --2
 
 # 更改权限。无法修改docker外挂载的目录权限。
 RUN chown -R www-data:www-data /var/www/

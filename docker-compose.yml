@@ -10,7 +10,7 @@ services:
         - VERSION=${NGINX_VERSION}
         - MIRRORS_URL
         - TIMEZONE
-    container_name: nginx_${VERSION}
+    container_name: nginx_${VERSION}_${NGINX_VERSION}
     ports:
       - ${NGINX_HOST_HTTP_PORT}:80
       - ${NGINX_HOST_HTTPS_PORT}:443
@@ -42,7 +42,7 @@ services:
         - MIRRORS_URL
         - TIMEZONE
         - COMPOSER_URL
-    container_name: php_${VERSION}
+    container_name: php_${VERSION}_${PHP_VERSION}
     # privileged: true
     # ports:
     #   - 9000:9000
@@ -72,7 +72,7 @@ services:
         - VERSION=${MYSQL_VERSION}
         - MIRRORS_URL
         - TIMEZONE
-    container_name: mysql_${VERSION}
+    container_name: mysql_${VERSION}_${MYSQL_VERSION}
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
@@ -80,7 +80,7 @@ services:
       - ${MYSQL_BUILD}/etc/my.cnf:/etc/mysql/my.cnf
       - ${MYSQL_BUILD}/etc/conf.d/docker.cnf:/etc/mysql/conf.d/docker.cnf
       # 数据库文件
-      - ${MYSQL_DATA_PATH}:/var/lib/mysql/
+      - ${MYSQL_DATA_PATH}${MYSQL_VERSION}/data/:/var/lib/mysql/
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - ${MYSQL_PORT}:3306
@@ -97,7 +97,7 @@ services:
         - VERSION=${REDIS_VERSION}
         - MIRRORS_URL
         - TIMEZONE
-    container_name: redis_${VERSION}
+    container_name: redis_${VERSION}_${REDIS_VERSION}
     command: redis-server /etc/redis/redis.conf
     volumes:
       - ${REDIS_CONF_PATH}${REDIS_VERSION}.conf:/etc/redis/redis.conf
