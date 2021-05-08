@@ -68,6 +68,7 @@ RUN docker-php-ext-configure exif --enable-exif \
     && docker-php-ext-configure pdo_mysql --with-pdo-mysql \
     && docker-php-ext-install -j$(nproc) \
     gd \
+    zip \
     intl \
     exif \
     soap \
@@ -81,6 +82,7 @@ RUN docker-php-ext-configure exif --enable-exif \
     && docker-php-ext-enable \
     # 开启扩展
     gd \
+    zip \
     intl \
     exif \
     soap \
