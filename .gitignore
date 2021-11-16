@@ -12,5 +12,6 @@
 /data/nginx/*
 !/data/nginx/certs/
 !/data/nginx/default.conf.example
+!/data/nginx/default.conf
 !.gitkeep
 .env

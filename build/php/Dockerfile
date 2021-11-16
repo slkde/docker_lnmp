@@ -106,9 +106,11 @@ RUN mv /usr/local/lib/php/extensions/ext/* `php-config --extension-dir`
 
 # 安装 Composer。将缓存挂载到宿主机
 RUN mkdir -p /root/.composer/cache
-RUN curl -sS https://install.phpcomposer.com/installer | php -- --install-dir=/usr/bin --filename=composer
-RUN composer config -g repo.packagist composer ${COMPOSER_URL} \
-    && composer self-update --2
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+RUN composer config -g repo.packagist composer ${COMPOSER_URL}
+# 已经默认为v2版本 RUN composer self-update --2
+
+# CMD ["/usr/bin/composer","self-update"]
 
 # 更改权限。无法修改docker外挂载的目录权限。
 RUN chown -R www-data:www-data /var/www/

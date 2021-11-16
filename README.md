@@ -151,6 +151,18 @@ data/nginx/certs/
    
     -有些扩展可以拷贝到build/php/ext/下。
 3. https证书位置/data/nginx/conf.d/certs/
+   
+4. 需要更新composer 请运行
+```
+   composer self-update --2
+```
+   
+## 可能出现的错误：
+
+1. php安装redis失败，出现以下错误的，是网络原因，多试几次。
+```
+No releases available for package "pecl.php.net/redis"
+```
 
 docker_[php](https://hub.docker.com/_/php)
 
