@@ -8,7 +8,7 @@
 ### 说明：
 个人感觉十分简洁好用的lnmp环境。欢迎大家使用，以及提出意见。
 
-推荐在windows使用[wsl---windows subsystem for linux](https://github.com/slkde/wsl)。
+推荐在windows使用[wsl---windows subsystem for linux](https://github.com/slkde/wsl)，windows11很好用，推荐在windows11中使用wsl
 
 推荐使用[vscode](https://github.com/slkde/vscode) 点击连接远程，点击remote-containers: attach to running container
 ### 使用方法：
@@ -159,7 +159,7 @@ data/nginx/certs/
    
 ## 可能出现的错误：
 
-1. php安装redis失败，出现以下错误的，是网络原因，多试几次。
+1. php安装redis扩展失败，出现以下错误的，是网络原因，多试几次。当然如果用不上redis，可以注释掉redis扩展的安装代码。
 ```
 No releases available for package "pecl.php.net/redis"
 ```
